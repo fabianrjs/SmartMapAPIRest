@@ -5,7 +5,10 @@ class EdificioSerializer(serializers.ModelSerializer):
  
     class Meta:
         model = Edificio
-        fields = ('id',
-                  'codigo',
-                  'nombre',
-                  'imagen')
+        fields = [
+            'id_edificio',
+            'nombre',
+            'apodo',
+            'descripcion',
+            'imagen'
+        ]

@@ -87,7 +87,8 @@ WSGI_APPLICATION = 'backendSmartMap.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
-        'NAME': 'smart_map_db',
+        #'NAME': 'smart_map_db',
+        'NAME': 'prueba',
         'HOST': '127.0.0.1',
         'PORT': 27018,
     }
