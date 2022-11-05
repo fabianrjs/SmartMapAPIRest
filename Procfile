@@ -1,0 +1,1 @@
+web: gunicorn backendSmartMap.wsgi --log-file -
