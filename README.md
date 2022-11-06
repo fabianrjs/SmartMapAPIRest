@@ -1,3 +1,5 @@
 ## SmartMap API Rest con DJango Rest Framework y MongoDB
 
-Ejecutar: python manage.py runserver
+Ejecutar app: python manage.py runserver
+
+Ejecutar enviroment: venv\Scripts\activate 
