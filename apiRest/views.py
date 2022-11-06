@@ -21,7 +21,7 @@ def edificios(request):
         if edificio_serializer.is_valid():
             print(edificio_serializer.validated_data)
             edificio_serializer.save()
-            return JsonResponse("Edificio agregado", safe = False)
+            return JsonResponse("success", safe = False)
         raise ValidationError(edificio_serializer.errors)
 
 @api_view(['GET'])
@@ -47,7 +47,7 @@ def nodos(request):
         if nodo_serializer.is_valid():
             print(nodo_serializer.validated_data)
             nodo_serializer.save()
-            return JsonResponse("nodo agregado", safe = False)
+            return JsonResponse("success", safe = False)
         raise ValidationError(nodo_serializer.errors)
 
 @api_view(['GET'])

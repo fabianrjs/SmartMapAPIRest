@@ -26,7 +26,7 @@ class EdificioSerializer(serializers.ModelSerializer):
         fields = [
             'id_edificio',
             'nombre',
-            'apodo',
+            'palabras_clave',
             'descripcion',
             'imagen',
             'aforoActual',

@@ -25,7 +25,7 @@ class Espacio(models.Model):
 class Edificio(models.Model):
     id_edificio = models.SmallIntegerField(primary_key = True, unique = True)
     nombre = models.CharField(max_length = 100)
-    apodo = models.CharField(max_length = 100, null = True)
+    palabras_clave = models.CharField(max_length = 100, null = True)
     descripcion = models.CharField(max_length = 500)
     imagen = models.CharField(max_length = 500, null = True)
     aforoActual = models.IntegerField(default = 0, null = True)
@@ -35,7 +35,7 @@ class Edificio(models.Model):
     class Meta:
         indexes = [
             models.Index(fields=['nombre']),
-            models.Index(fields=['apodo'])
+            models.Index(fields=['palabras_clave'])
         ]
 
 class Nodo(models.Model):
