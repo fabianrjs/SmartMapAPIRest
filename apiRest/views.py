@@ -5,8 +5,8 @@ from django.forms import ValidationError
 from django.http.response import JsonResponse
 from rest_framework.parsers import JSONParser 
 from rest_framework import status
-from apiRest.models import Edificio, Nodo
-from apiRest.serializers import EdificioSerializer, NodoSerializer
+from apiRest.models import Edificio, Nodo, Usuario
+from apiRest.serializers import EdificioSerializer, NodoSerializer, UsuarioSerializer
 from rest_framework.decorators import api_view
 
 @api_view(['GET', 'POST'])
@@ -57,5 +57,30 @@ def nodo(request,idNodo):
             nodo = Nodo.objects.get(idNodo = idNodo)
             nodo_serializer = NodoSerializer(nodo)
             return JsonResponse(nodo_serializer.data, safe = False)
+        except:
+            raise Http404
+
+@api_view(['GET', 'POST'])
+def usuarios(request):
+    if request.method == 'GET':
+        usuario_serializer = UsuarioSerializer(Usuario.objects, many = True)
+        return JsonResponse(usuario_serializer.data, safe = False)
+    elif request.method == 'POST':
+        usuario_data = JSONParser().parse(request)
+        usuario_serializer = UsuarioSerializer(data = usuario_data)
+        
+        if usuario_serializer.is_valid():
+            print(usuario_serializer.validated_data)
+            usuario_serializer.save()
+            return JsonResponse("usuario agregado", safe = False)
+        raise ValidationError(usuario_serializer.errors)
+
+@api_view(['GET'])
+def usuario(request,uId):
+    if request.method == 'GET':
+        try:
+            usuario = Usuario.objects.get(uId = uId)
+            usuario_serializer = UsuarioSerializer(usuario)
+            return JsonResponse(usuario_serializer.data, safe = False)
         except:
             raise Http404
