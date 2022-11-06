@@ -91,7 +91,7 @@ DATABASES = {
         #'NAME': 'smart_map_db',
         'NAME': 'prueba',
         'HOST': '127.0.0.1',
-        'PORT': 27018,
+        'PORT': 27017,
     }
 }
 
