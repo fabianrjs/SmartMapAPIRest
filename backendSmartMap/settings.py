@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework', # Django REST framework
     'apiRest.apps.ApirestConfig', # api rest
-    'corsheaders', # CORS
 ]
 
 MIDDLEWARE = [
