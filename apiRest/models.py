@@ -12,12 +12,13 @@ class Espacio(models.Model):
         LABORATORIO = 'LAB','Laboratorio'
         SALA_ESTUDIO = 'SE','Sala de estudio'
         SALON = 'SA','Salon'
-        SALA_COMPUTO = 'SC','Sala de computo' 
+        SALA_COMPUTO = 'SC','Sala de computo'
 
     nombre = models.CharField(max_length = 100, default = "", null = True)
     sePuedeComer = models.BooleanField(default = False, null = True)
     tipoEspacio = models.CharField(choices=TIPO_ESPACIO.choices, null = True)
-    prestamoEquipos =  models.BooleanField(default = False, null = True)
+    prestamoEquipos = models.BooleanField(default = False, null = True)
+    piso = models.CharField(max_length = 3)
 
     class Meta:
         abstract = True
