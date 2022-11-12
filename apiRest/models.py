@@ -1,6 +1,7 @@
 from django.db import models
 from djongo import models
 
+
 class Espacio(models.Model):
 
     class TIPO_ESPACIO(models.TextChoices):
@@ -47,4 +48,21 @@ class Nodo(models.Model):
     tipoEspacio = models.FloatField(default = 1,null = True)
 
 
+class HistorialUbicacion(models.Model):
+    idNodo = models.IntegerField(default = 0, null = True)
+    fecha = models.DateTimeField(auto_now_add = True, null = True)
+
+    class Meta:
+        abstract = True
+        indexes = [
+            models.Index(fields=['idNodo'])
+        ]
+
+class Usuario(models.Model):
+    uId = models.CharField(max_length = 500, primary_key = True, unique = True, default = "")
+    email = models.CharField(max_length = 200 , default = "")
+    nombre = models.CharField(max_length = 200, default = "")
+    nodoActual = models.IntegerField(default = 0, null = True)
+    historialDeBusqueda = models.CharField(max_length = 500, null = True)
+    historialDeUbicaciones = models.ArrayField(model_container=HistorialUbicacion, null = True)
 

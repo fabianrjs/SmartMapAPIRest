@@ -1,5 +1,5 @@
 from rest_framework import serializers 
-from apiRest.models import Edificio, Espacio, Nodo
+from apiRest.models import Edificio, Espacio, HistorialUbicacion, Nodo, Usuario
 
 
 class EspacioSerializer(serializers.Serializer):
@@ -46,4 +46,28 @@ class NodoSerializer(serializers.ModelSerializer):
             'habilitado',
             'vecinos',
             'tipoEspacio',
+        ]
+
+class HistorialUbicacionSerializer(serializers.Serializer):
+    idNodo = serializers.IntegerField(allow_null = True)
+    fecha = serializers.DateTimeField(allow_null = True)
+    class Meta:
+            model = HistorialUbicacion
+            fields = [
+                'idNodo',
+                'fecha',
+            ]
+
+class UsuarioSerializer(serializers.ModelSerializer):
+    historialDeUbicaciones = HistorialUbicacionSerializer(many = True, allow_null = True)
+    
+    class Meta:
+        model = Usuario
+        fields = [
+            'uId',
+            'email',
+            'nombre',
+            'nodoActual',
+            'historialDeBusqueda',
+            'historialDeUbicaciones'
         ]
