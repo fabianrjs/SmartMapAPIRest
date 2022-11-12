@@ -8,6 +8,7 @@ class EspacioSerializer(serializers.Serializer):
     sePuedeComer = serializers.BooleanField(allow_null = True)
     tipoEspacio = serializers.CharField(allow_null = True)
     prestamoEquipos = serializers.BooleanField(allow_null = True)
+    piso = serializers.CharField(allow_null = True)
     
     class Meta:
             model = Espacio
@@ -15,7 +16,8 @@ class EspacioSerializer(serializers.Serializer):
                 'nombre',
                 'sePuedeComer',
                 'tipoEspacio',
-                'prestamoEquipos'
+                'prestamoEquipos',
+                'piso',
             ]
 
 class EdificioSerializer(serializers.ModelSerializer):
