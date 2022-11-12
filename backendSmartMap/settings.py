@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework', # Django REST framework
     'apiRest.apps.ApirestConfig', # api rest
-    'corsheaders', # CORS
 ]
 
 MIDDLEWARE = [
@@ -51,9 +50,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # CORS
-    'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.common.CommonMiddleware',
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
@@ -88,7 +84,6 @@ WSGI_APPLICATION = 'backendSmartMap.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
-        #'NAME': 'smart_map_db',
         'NAME': 'prueba',
         'HOST': '127.0.0.1',
         'PORT': 27017,
