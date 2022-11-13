@@ -8,5 +8,7 @@ urlpatterns = [
     path('api/nodos', views.nodos),
     path('api/nodos/<str:idNodo>/', views.nodo),
     path('api/usuarios', views.usuarios),
-    path('api/usuario/<str:uId>/', views.usuario)
+    path('api/usuario/<str:uId>/', views.usuario),
+    path('api/ActualizarPosicionUsuario/<str:uId>/<str:nodoAnterior>/<str:nodoActual>', views.actualizarUbicacion),
+    path('api/GuardarBusquedaDelUsuario/<str:uId>/<str:busqueda>', views.guardarBusqueda)
 ]
