@@ -25,6 +25,9 @@ class Camino(object):
             noExplorados.sort(key=lambda x: x.heuristica)
 
             actual = noExplorados[0]
+            
+            # if(actual == final):
+            #     return final
 
             noExplorados.remove(actual)
             vecinosActual = actual.vecinos
@@ -34,8 +37,7 @@ class Camino(object):
 
                 if buscarNodo(vecino, self.nodos) in noExplorados and buscarNodo(vecino, self.nodos).habilitado == True:
                     vecino = buscarNodo(vecino, self.nodos)
-                    distancia = actual.heuristica + \
-                        (vecino.peso * vecino.tipoEspacio)
+                    distancia = actual.heuristica + (vecino.peso * vecino.tipoEspacio)
 
                     if distancia < vecino.heuristica:
                         vecino.heuristica = distancia
@@ -50,9 +52,11 @@ class Camino(object):
         resultado = []
 
         nodoRespuesta = self.DijkstrasAlgo(inicio, final)
+        pesoTotal = nodoRespuesta.heuristica 
 
         while nodoRespuesta != None:
             resultado.append(nodoRespuesta)
             nodoRespuesta = nodoRespuesta.nodoPadre
         resultado.reverse()
+        resultado.append(pesoTotal)
         return resultado
