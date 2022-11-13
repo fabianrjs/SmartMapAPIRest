@@ -1,3 +1,4 @@
+from django import forms
 from django.db import models
 from djongo import models
 
@@ -52,17 +53,25 @@ class HistorialUbicacion(models.Model):
     idNodo = models.IntegerField(default = 0, null = True)
     fecha = models.DateTimeField(auto_now_add = True, null = True)
 
+    @classmethod
+    def create(cls, idNodo, fecha):
+        historial = cls(idNodo=idNodo,fecha = fecha)
+
+        # do something with the book
+        return historial
+
     class Meta:
         abstract = True
         indexes = [
             models.Index(fields=['idNodo'])
         ]
 
+
 class Usuario(models.Model):
     uId = models.CharField(max_length = 500, primary_key = True, unique = True, default = "")
     email = models.CharField(max_length = 200 , default = "")
     nombre = models.CharField(max_length = 200, default = "")
-    nodoActual = models.IntegerField(default = 0, null = True)
+    nodoActual = models.IntegerField(default = -1, null = True)
     historialDeBusqueda = models.CharField(max_length = 500, null = True)
     historialDeUbicaciones = models.ArrayField(model_container=HistorialUbicacion, null = True)
 

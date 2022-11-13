@@ -1,10 +1,5 @@
 from busquedaDeRutas.caminoMejorado import Camino
-
-def buscarNodo(id, nodos):
-    for nodo in nodos:
-        if nodo.idNodo == id:
-            return nodo
-
+from apiRest.models import Edificio
 
 class Nodo(object):
 
@@ -23,7 +18,7 @@ class Nodo(object):
         self.nodoPadre = None
 
 
-def buscarNodo(idNodo, listaNodos):
+def buscarNodo(idNodo, listaNodos) -> Nodo:
     for nodo in listaNodos:
         if nodo.idNodo == idNodo:
             return nodo
@@ -31,6 +26,7 @@ def buscarNodo(idNodo, listaNodos):
 
 def buscarRutaOptima(listaNodos, idNodoInicio, idNodoFinal) -> str:
 
+    edificio = Edificio.objects.get(id_edificio = idNodoFinal)
     for nodo in listaNodos:
         # print(type(nodo.idNodo))
         #print(str(nodo.idNodo) + "--")
@@ -41,13 +37,27 @@ def buscarRutaOptima(listaNodos, idNodoInicio, idNodoFinal) -> str:
     # buscarNodo(152, listaNodos).peso = 50
 
     finder = Camino()
-    caminos = finder.buscarCaminoMasCorto(
-        listaNodos, buscarNodo(idNodoInicio, listaNodos), buscarNodo(idNodoFinal, listaNodos))
+    entradas = edificio.listaDeEntradas.split(",")
+    caminoMasCorto = []
+    pesoMinimo = 100000
+
+    for entrada in entradas:
+        
+
+        print(buscarNodo(entrada, listaNodos))
+        caminos = finder.buscarCaminoMasCorto(
+            listaNodos, buscarNodo(idNodoInicio, listaNodos), buscarNodo(int(entrada), listaNodos))
+        if(caminos[len(caminos) - 1] < pesoMinimo):
+            pesoMinimo = caminos[len(caminos) - 1]
+            caminos.pop()
+            caminoMasCorto = caminos.copy()
+    
 
     rutaStr = ''
-    for path in caminos:
+    for path in caminoMasCorto:
         rutaStr += str(path.idNodo) + ','
         print(path.idNodo)
 
+    
     return rutaStr[:-1]
     
