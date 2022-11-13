@@ -1,11 +1,12 @@
 import datetime
-from django.http import Http404
+from django.http import Http404, HttpResponseBadRequest
 from django.shortcuts import render
 from django.forms import ValidationError
 
 from django.http.response import JsonResponse
 from rest_framework.parsers import JSONParser 
 from rest_framework import status
+from apiRest.mockSpaceAnalytics import calcularAforo
 from apiRest.models import Edificio, Nodo, Usuario, HistorialUbicacion
 from apiRest.serializers import EdificioSerializer, NodoSerializer, UsuarioSerializer,HistorialUbicacionSerializer
 from rest_framework.decorators import api_view
@@ -139,3 +140,13 @@ def guardarBusqueda(request,uId,busqueda):
             return JsonResponse("success", safe = False)
         except:
             raise Http404
+
+@api_view(['GET'])
+def aforo(request,id_edificio):
+    numPisos = 14
+    if request.method == 'GET':
+        if(id_edificio.isdigit()):
+            aforoEdificio = calcularAforo(id_edificio,numPisos)
+            return JsonResponse(aforoEdificio, safe = False)
+        else:
+            return HttpResponseBadRequest
