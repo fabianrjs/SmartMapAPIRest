@@ -143,7 +143,7 @@ def guardarBusqueda(request,uId,busqueda):
 
 @api_view(['GET'])
 def aforo(request,id_edificio):
-    numPisos = 14
+    numPisos = 6
     if request.method == 'GET':
         if(id_edificio.isdigit()):
             aforoEdificio = calcularAforo(id_edificio,numPisos)
