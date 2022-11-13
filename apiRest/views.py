@@ -5,11 +5,12 @@ from django.forms import ValidationError
 
 from django.http.response import JsonResponse
 from rest_framework.parsers import JSONParser 
-from rest_framework import status
 from apiRest.mockSpaceAnalytics import calcularAforo
 from apiRest.models import Edificio, Nodo, Usuario, HistorialUbicacion
 from apiRest.serializers import EdificioSerializer, NodoSerializer, UsuarioSerializer,HistorialUbicacionSerializer
 from rest_framework.decorators import api_view
+
+from busquedaDeRutas import rutaMejorada
 
 @api_view(['GET', 'POST'])
 def edificios(request):
@@ -150,3 +151,30 @@ def aforo(request,id_edificio):
             return JsonResponse(aforoEdificio, safe = False)
         else:
             return HttpResponseBadRequest
+
+@api_view(['GET'])
+def ruta(request, idNodoInicio, idNodoFinal):
+    if request.method == 'GET':
+        try:
+            if (str(idNodoInicio).isdigit() and str(idNodoFinal).isdigit()):
+                nodosdb = NodoSerializer(Nodo.objects, many = True)
+                nodos = []
+                for nodo in nodosdb.data:
+                    nodos.append(
+                        rutaMejorada.Nodo(
+                            idNodo = nodo['idNodo'],
+                            peso = nodo['peso'],
+                            tipoEspacio = nodo['tipoEspacio'],
+                            vecinos = nodo['vecinos'],
+                            habilitado = nodo['habilitado']
+                        )
+                    )
+                ruta = rutaMejorada.buscarRutaOptima(nodos, int(idNodoInicio), int(idNodoFinal))
+                return JsonResponse({'ruta': ruta}, safe = False)
+            else:
+                return JsonResponse("failed", safe = False)
+        except Exception as e:
+            print('--------')
+            print(e)
+            print('--------')
+            raise Http404
