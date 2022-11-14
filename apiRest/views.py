@@ -125,7 +125,8 @@ def actualizarUbicacion(request,uId,nodoAnterior,nodoActual):
             now = datetime.datetime.now()
             nuevoNodo = HistorialUbicacion.create(nodoActual,now)
 
-            nNodo = HistorialUbicacionSerializer(nuevoNodo) 
+            if(usuario.historialDeUbicaciones == None):
+                usuario.historialDeUbicaciones = [] 
             usuario.historialDeUbicaciones.append(vars(nuevoNodo))
             
             #actualizar pesos de los nodos
