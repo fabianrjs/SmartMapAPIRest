@@ -2,22 +2,33 @@ import datetime
 from django.http import Http404, HttpResponseBadRequest
 from django.shortcuts import render
 from django.forms import ValidationError
-
+from django.core.exceptions import ObjectDoesNotExist
 from django.http.response import JsonResponse
 from rest_framework.parsers import JSONParser 
 from apiRest.mockSpaceAnalytics import calcularAforo
 from apiRest.models import Edificio, Nodo, Usuario, HistorialUbicacion
 from apiRest.serializers import EdificioSerializer, NodoSerializer, UsuarioSerializer,HistorialUbicacionSerializer
 from rest_framework.decorators import api_view
-
+from rest_framework import status
 from busquedaDeRutas import rutaMejorada
 
-@api_view(['GET', 'POST'])
-def edificios(request):
+@api_view(['GET'])
+def edificios(request,uId):
     if request.method == 'GET':
-        edificio_serializer = EdificioSerializer(Edificio.objects, many = True)
-        return JsonResponse(edificio_serializer.data, safe = False)
-    elif request.method == 'POST':
+        try:
+            usuario = Usuario.objects.get(uId = uId)
+            edificio_serializer = EdificioSerializer(Edificio.objects, many = True)
+            return JsonResponse(edificio_serializer.data, safe = False)
+        except Usuario.DoesNotExist:
+            edificios = Edificio.objects.values('id_edificio','nombre','palabras_clave',
+                'descripcion','imagen','aforoActual','listaDeEntradas')
+            edificio_serializer = EdificioSerializer(edificios, many = True)
+            return JsonResponse(edificio_serializer.data, safe = False)
+            
+
+@api_view(['POST'])
+def post_edificio(request):
+    if request.method == 'POST':
         edificio_data = JSONParser().parse(request)
         edificio_serializer = EdificioSerializer(data = edificio_data)
         
@@ -25,18 +36,28 @@ def edificios(request):
             print(edificio_serializer.validated_data)
             edificio_serializer.save()
             return JsonResponse("success", safe = False)
-        raise ValidationError(edificio_serializer.errors)
+        return JsonResponse(edificio_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
-def edificio(request,nombre):
+def edificio(request,nombre,uId):
     if request.method == 'GET':
         try:
+            usuario = Usuario.objects.get(uId = uId)
             edificio = Edificio.objects.get(nombre = nombre)
             edificio_serializer = EdificioSerializer(edificio)
             return JsonResponse(edificio_serializer.data, safe = False)
-        except:
-            raise Http404
-        
+        except Usuario.DoesNotExist:
+            try:
+                edificio = Edificio.objects.filter(nombre = nombre).values('id_edificio','nombre','palabras_clave',
+                    'descripcion','imagen','aforoActual','listaDeEntradas')
+                edificio_serializer = EdificioSerializer(edificio, many = True)
+                if (len(edificio_serializer.data) == 0):
+                    raise Http404
+                return JsonResponse(edificio_serializer.data, safe = False)
+
+            except:
+                 raise Http404
+       
         
 @api_view(['GET', 'POST'])
 def nodos(request):
@@ -51,7 +72,7 @@ def nodos(request):
             print(nodo_serializer.validated_data)
             nodo_serializer.save()
             return JsonResponse("success", safe = False)
-        raise ValidationError(nodo_serializer.errors)
+        raise ValidationError(nodo_serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
 def nodo(request,idNodo):
@@ -122,7 +143,7 @@ def actualizarUbicacion(request,uId,nodoAnterior,nodoActual):
             nodoAct.save()
            
             return JsonResponse("success", safe = False)
-        except:
+        except Usuario.DoesNotExist:
             raise Http404
 
 @api_view(['PUT'])
@@ -149,8 +170,7 @@ def aforo(request,id_edificio):
         if(id_edificio.isdigit()):
             aforoEdificio = calcularAforo(id_edificio,numPisos)
             return JsonResponse(aforoEdificio, safe = False)
-        else:
-            return HttpResponseBadRequest
+        raise Http404
 
 @api_view(['GET'])
 def ruta(request, idNodoInicio, idNodoFinal):

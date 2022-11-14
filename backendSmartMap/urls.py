@@ -2,8 +2,9 @@ from django.urls import path
 from apiRest import views
 
 urlpatterns = [
-    path('api/edificios', views.edificios),
-    path('api/edificios/<str:nombre>/', views.edificio),
+    path('api/edificios/<str:uId>/', views.edificios),
+    path('api/postedificio',views.post_edificio),
+    path('api/edificio/<str:nombre>/<str:uId>/', views.edificio),
     path('api/nodos', views.nodos),
     path('api/nodos/<str:idNodo>/', views.nodo),
     path('api/usuarios', views.usuarios),
