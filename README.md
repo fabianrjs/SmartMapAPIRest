@@ -7,7 +7,7 @@ Para la busqueda de en el grafo se hizo uso del siguiente algoritmo:
 
 Shortest path finding using Dijkstra's Algorithm in Unity 3D, coded with C#.
 
-[![Video Demo CountPages alpha](https://share.gifyoutube.com/jqLgol.gif)](https://youtu.be/U0Ra8RoUgX8)
+[Video Demo CountPages alpha]](https://youtu.be/U0Ra8RoUgX8)
 
 ### Download: [Algorithm for WindowOS](https://www.n3evin.com/unity/DijkstraUnity.zip)
 
